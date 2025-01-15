@@ -1,0 +1,8 @@
+Django
+django-environ
+djangorestframework== 3.14.0
+psycopg2
+requests
+boto3
+django-storages
+wdg-file-storage

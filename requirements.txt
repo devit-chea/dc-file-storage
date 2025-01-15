@@ -1,6 +1,6 @@
 Django
 django-environ
-djangorestframework== 3.14.0
+djangorestframework==3.14.0
 psycopg2
 requests
 boto3

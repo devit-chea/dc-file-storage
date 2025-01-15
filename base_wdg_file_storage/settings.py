@@ -14,8 +14,12 @@ from pathlib import Path
 import os
 import logging
 import environ
+import warnings
 
+# Insert a simple entry into the list of warnings filters (at the front).
+warnings.simplefilter("default", DeprecationWarning)
 
+# Return a logger with the specified name, creating it if necessary.
 logger = logging.getLogger(__name__)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -185,3 +189,51 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Rest framework
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "base_wdg_file_storage.pagination.CustomPagination",
+    "DEFAULT_FILTER_BACKENDS": ["rest_framework.filters.OrderingFilter"],
+    "EXCEPTION_HANDLER": "base_wdg_file_storage.exceptions.custom_exception_handler",
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+}
+
+# Logging
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "[%(asctime)s] [%(schema_name)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            "datefmt": "%d/%b/%Y %H:%M:%S",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "default": {
+            "level": "INFO",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": "logs/log.log",
+            "when": "midnight",
+            "interval": 1,
+            "backupCount": 10,
+            "formatter": "verbose",
+            "delay": True,
+        },
+    },
+    "loggers": {
+        "": {
+            "handlers": ["default"],
+            "level": "WARNING",
+            "propagate": True,
+        },
+    },
+}

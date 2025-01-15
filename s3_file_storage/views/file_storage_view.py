@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 from django.conf import settings
 from django.http import FileResponse
-from rest_framework import status
+from rest_framework import viewsets, status
 from django.db import transaction
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -28,19 +28,18 @@ from s3_file_storage.utils.utils import (
     unique_file_name_by_original,
 )
 from wdg_file_storage.backends.s3 import S3Client
-from s3_file_storage.utils.s3_helpers import get_s3_client
 import requests
 import uuid
 
 logger = logging.getLogger(__name__)
 
 
-# class FileStorageView(BaseModelViewSet):
-#     permission_classes = []  # No Permission
+class FileStorageView(viewsets.ModelViewSet):
+    permission_classes = []  # No Permission
 
-#     model = FileStorageModel
-#     queryset = FileStorageModel.objects.all()
-#     serializer_class = FileStorageSerializer
+    model = FileStorageModel
+    queryset = FileStorageModel.objects.all()
+    serializer_class = FileStorageSerializer
 
 
 class FileStoragePreviewView(APIView):
@@ -64,13 +63,11 @@ class FileStoragePreviewView(APIView):
                     {"error": "File not found."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-
+            
             storage = S3MediaStorage()
             
-            print(file_instance.file_path)
-            
             # Open the file from S3 storage(Base storage config in settings)
-            file_obj = storage.open(file_instance.file_path, "rb")
+            file_obj = storage.open(file_instance.file_path.name, "rb")
 
             # Return the file as a response
             return FileResponse(

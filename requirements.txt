@@ -1,6 +1,7 @@
 Django
 django-environ
 djangorestframework==3.14.0
+django-auditlog
 psycopg2
 requests
 boto3

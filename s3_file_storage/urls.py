@@ -6,7 +6,7 @@ from s3_file_storage.views.file_storage_view import (
     FileStorageCreateView,
     FileStorageDeleteView,
     FileStoragePreviewView,
-    # FileStorageView,
+    FileStorageView,
     GenerateDeletePresignedUrlView,
     GenerateDownloadPresignedUrlView,
     GenerateUploadPresignedUrlView,
@@ -14,7 +14,7 @@ from s3_file_storage.views.file_storage_view import (
 )
 
 router = routers.DefaultRouter(trailing_slash=False)
-# router.register(r"file-storage", FileStorageView)
+router.register(r"file-storage", FileStorageView)
 
 urlpatterns = [  
     # Generate presigned URL

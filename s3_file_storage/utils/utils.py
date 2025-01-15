@@ -6,7 +6,7 @@ from s3_file_storage.backends.storages import S3MediaStorage
 from django.core.files.storage import FileSystemStorage
 # from django.core.files.storage import get_storage_class
 from django.core.files.storage import default_storage
-
+import warnings
 
 from django.conf import settings
 
@@ -107,3 +107,14 @@ def split_first_path(path):
     first_part = parts[0]
     remaining_path = parts[1] if len(parts) > 1 else ""
     return remaining_path
+
+
+def abc_util(msg: str = "Hello"):
+    warnings.warn(
+        "abc_util() is deprecated and will be removed in a future release. "
+        "Please use xyz_util() instead.",
+        DeprecationWarning,
+        stacklevel=2,  # Points to the caller of abc_util()
+    )
+    # Function logic here
+    return f"Function result: {msg}"

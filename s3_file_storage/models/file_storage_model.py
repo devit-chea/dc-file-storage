@@ -10,7 +10,7 @@ class FileStorageModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     file_id = models.UUIDField(default=uuid.uuid4, editable=False)
     file_path = models.FileField(
-        blank=False, null=True, storage=MultiStorage(backend_name="s3")
+        max_length=1024, blank=False, null=True, storage=MultiStorage(backend_name="s3")
     )
     file_type = models.CharField(max_length=255, blank=False, null=True)
     description = models.TextField(blank=False, null=True)
@@ -37,6 +37,9 @@ class FileStorageModel(models.Model):
     create_uid = models.IntegerField(blank=True, null=True, editable=False)
     write_uid = models.IntegerField(blank=True, null=True, editable=False)
     company_id = models.CharField(blank=True, null=True, editable=False)
+    
+    # Add a class-level attribute for description if needed
+    model_description = "File Storage"
     
     class Meta:
         db_table = "file_storage"
